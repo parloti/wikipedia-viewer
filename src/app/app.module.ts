@@ -5,7 +5,6 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
-import { SearchResultComponent } from './search-result/search-result.component';
 import { SearchResultItemComponent } from './search-result-item/search-result-item.component';
 import { SearchResultListComponent } from './search-result-list/search-result-list.component';
 
@@ -13,7 +12,6 @@ import { SearchResultListComponent } from './search-result-list/search-result-li
   declarations: [
     AppComponent,
     SearchBoxComponent,
-    SearchResultComponent,
     SearchResultItemComponent,
     SearchResultListComponent
   ],
