@@ -6,8 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-result-list.component.css']
 })
 export class SearchResultListComponent implements OnInit {
+  results: Array<any>;
 
-  constructor() { }
+  constructor() {
+    this.results = ["", ""];
+  }
 
   ngOnInit() {
   }
