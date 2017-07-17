@@ -1,13 +1,13 @@
 export class UrlSearch {
-    private action: string;
-    private prop: string;
-    private exintro: string;
-    private format: string;
+    private readonly action: string;
+    private readonly prop: string;
+    private readonly exintro: string;
+    private readonly format: string;
     private titles: Array<string>;
 
     private href: string;
 
-    constructor(_titles: Array<string>) {
+    public constructor(_titles: Array<string>) {
         this.action = 'query';
         this.prop = 'extracts';
         this.exintro = 'true';
