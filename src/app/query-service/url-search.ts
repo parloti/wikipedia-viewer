@@ -3,23 +3,24 @@ export class UrlSearch {
     private readonly prop: string;
     private readonly exintro: string;
     private readonly format: string;
+    private readonly origin: string;
     private titles: Array<string>;
 
-    private href: string;
-
-    public constructor(_titles: Array<string>) {
+    public constructor() {
         this.action = 'query';
         this.prop = 'extracts';
         this.exintro = 'true';
         this.format = 'json';
-        this.titles = _titles;
+        this.origin = '*';
     }
 
-    public getUrlSearchSource(): string {
-        const _titles = this.getTitleSource();
+    public getUrlSearchSource(_titles: Array<string>): string {
+        this.titles = _titles;
+
+        const __titles = this.getTitleSource();
         const partialSource = this.toString();
 
-        const source = _titles + partialSource;
+        const source = __titles + partialSource;
 
         return source;
     }

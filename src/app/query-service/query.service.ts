@@ -1,17 +1,78 @@
 import { Injectable } from '@angular/core';
+import { Headers, Http } from '@angular/http';
 
-import { Url } from './url';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
+import 'rxjs/add/operator/map';
+
+import { BaseUrl } from './base-url';
+import { UrlSearch } from './url-search';
+import { Result } from '../result';
 
 @Injectable()
 export class QueryService {
-  private readonly url: Url;
 
-  public constructor() {
-    this.url = new Url(['Terra', 'Marte', 'Vênus']);
+  // private searchTerms: Subject<string>;
+  // public _searchTerms: Observable<string>;
+
+  public results: Observable<Result[]>;
+  private headers: Headers;
+
+  public constructor(
+    private readonly http: Http,
+    private readonly baseUrl: BaseUrl,
+    private readonly urlSearch: UrlSearch
+  ) {
+    // this.searchTerms = new Subject<string>();
+    // this._searchTerms = this.searchTerms.asObservable();
+    this.headers = new Headers({
+      'Content-Type': 'application/json; charset=UTF-8'
+    });
   }
 
-  query(): void {
-    console.log(this.url.getUrlSource());
+  publishData(data: string) {
+    //this.searchTerms.next(data);
+  }
+
+  public query(searchBoxValue: string): Observable<Result[]> {
+    console.log(searchBoxValue);
+    //this.searchTerms.next(searchBoxValue);
+
+    const titles: Array<string> = this.getTitles(searchBoxValue);
+    const fullUrl: string = this.getFullUrlSource(titles);
+    console.log(fullUrl);
+
+    return this.http
+      .get(fullUrl)
+      .map(response => {
+        console.log(response);
+        return response.json().data as Result[];
+      })
+      .catch(error => {
+        console.log(error);
+        return Observable.of<Result[]>([]);
+      });
+  }
+
+  private getFullUrlSource(titles: Array<string>): string {
+    const baseUrl: string = this.baseUrl.getBaseUrlSource();
+    const searchSource: string = this.urlSearch.getUrlSearchSource(titles);
+
+    const fullUrl = `${baseUrl}?${searchSource}`;
+
+    return fullUrl;
+  }
+
+  private getTitles(searchBoxValue: string): Array<string> {
+    const titles = searchBoxValue.split(/,|\||;/g);
+    const _titles = titles.map(value => value.trim());
+
+    return _titles;
+  }
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
   }
 
 }

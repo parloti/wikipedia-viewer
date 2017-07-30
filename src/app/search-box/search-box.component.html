@@ -4,8 +4,10 @@
   </a>
 </div>
 <div>
-  <input [(ngModel)]="query" placeholder="Search">
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" placeholder="Search">
 </div>
 <div>
   <span>Click icon to search</span>
 </div>
+
+<div *ngFor="let item of (results | async)">{{ item }}</div>
