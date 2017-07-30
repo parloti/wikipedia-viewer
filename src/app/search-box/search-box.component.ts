@@ -27,26 +27,14 @@ import { Result } from '../result';
 })
 
 export class SearchBoxComponent implements OnInit {
-  results: Observable<Result[]>;
-  private searchTerms = new Subject<string>();
 
   constructor(private queryService: QueryService) { }
 
   public search(searchBoxValue: string): void {
-    this.searchTerms.next(searchBoxValue);
+    this.queryService.searchTerms.next(searchBoxValue);
   }
 
   ngOnInit() {
-    this.results = this.searchTerms
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .switchMap(term => term
-        ? this.queryService.query(term)
-        : Observable.of<Result[]>([])
-      )
-      .catch(error => {
-        console.log(error);
-        return Observable.of<Result[]>([]);
-      });
+    this.queryService.observeSearchBoxValue();
   }
 }

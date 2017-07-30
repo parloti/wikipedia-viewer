@@ -13,9 +13,7 @@ import { Result } from '../result';
 @Injectable()
 export class QueryService {
 
-  // private searchTerms: Subject<string>;
-  // public _searchTerms: Observable<string>;
-
+  public searchTerms: Subject<string>;
   public results: Observable<Result[]>;
   private headers: Headers;
 
@@ -24,8 +22,8 @@ export class QueryService {
     private readonly baseUrl: BaseUrl,
     private readonly urlSearch: UrlSearch
   ) {
-    // this.searchTerms = new Subject<string>();
-    // this._searchTerms = this.searchTerms.asObservable();
+    this.searchTerms = new Subject<string>();
+    this.results = new Observable<Result[]>();
     this.headers = new Headers({
       'Content-Type': 'application/json; charset=UTF-8'
     });
@@ -55,6 +53,20 @@ export class QueryService {
       });
   }
 
+  public observeSearchBoxValue(): void {
+    this.results = this.searchTerms
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap(term => term
+        ? this.query(term)
+        : Observable.of<Result[]>([])
+      )
+      .catch(error => {
+        console.log(error);
+        return Observable.of<Result[]>([]);
+      });
+  }
+
   private getFullUrlSource(titles: Array<string>): string {
     const baseUrl: string = this.baseUrl.getBaseUrlSource();
     const searchSource: string = this.urlSearch.getUrlSearchSource(titles);
@@ -70,6 +82,7 @@ export class QueryService {
 
     return _titles;
   }
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error); // for demo purposes only
     return Promise.reject(error.message || error);
