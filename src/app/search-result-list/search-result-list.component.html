@@ -1,3 +1,3 @@
 <ul>
-  <app-search-result-item *ngFor="let result of queryService.results | async"></app-search-result-item>
+  <app-search-result-item *ngFor="let page of queryService.pages | async" [page]="page"></app-search-result-item>
 </ul>

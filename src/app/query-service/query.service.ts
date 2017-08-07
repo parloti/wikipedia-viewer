@@ -8,13 +8,13 @@ import 'rxjs/add/operator/map';
 
 import { BaseUrl } from './base-url';
 import { UrlSearch } from './url-search';
-import { Result } from '../result';
+import { Page } from '../page';
 
 @Injectable()
 export class QueryService {
 
   public searchTerms: Subject<string>;
-  public results: Observable<Result[]>;
+  public pages: Observable<Page[]>;
   private headers: Headers;
 
   public constructor(
@@ -23,7 +23,7 @@ export class QueryService {
     private readonly urlSearch: UrlSearch
   ) {
     this.searchTerms = new Subject<string>();
-    this.results = new Observable<Result[]>();
+    this.pages = new Observable<Page[]>();
     this.headers = new Headers({
       'Content-Type': 'application/json; charset=UTF-8'
     });
@@ -33,7 +33,7 @@ export class QueryService {
     this.searchTerms.next(searchBoxValue);
   }
 
-  public query(searchBoxValue: string): Observable<Result[]> {
+  public query(searchBoxValue: string): Observable<Page[]> {
     console.log(searchBoxValue);
     //this.searchTerms.next(searchBoxValue);
 
@@ -46,28 +46,28 @@ export class QueryService {
       .map(response => {
         console.log(response);
         const pages = response.json().query.pages;
-        return Object.keys(pages).map(k => pages[k]) as Result[];
+        return Object.keys(pages).map(k => pages[k]) as Page[];
       })
       .catch(error => {
         console.log(error);
-        return Observable.of<Result[]>([]);
+        return Observable.of<Page[]>([]);
       });
   }
 
   public observeSearchBoxValue(): void {
-    this.results = this.searchTerms
+    this.pages = this.searchTerms
       .debounceTime(300)
       .distinctUntilChanged()
       .switchMap(term => {
         console.log(term);
         return term
           ? this.query(term)
-          : Observable.of<Result[]>([]);
+          : Observable.of<Page[]>([]);
       }
       )
       .catch(error => {
         console.log(error);
-        return Observable.of<Result[]>([]);
+        return Observable.of<Page[]>([]);
       });
   }
 

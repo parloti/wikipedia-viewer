@@ -14,6 +14,6 @@ import { UrlSearch } from './query-service/url-search';
     UrlSearch
   ]
 })
-export class AppComponent {
 
+export class AppComponent {
 }
