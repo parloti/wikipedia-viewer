@@ -18,22 +18,17 @@ import { Result } from '../result';
 @Component({
   selector: 'app-search-result-list',
   templateUrl: './search-result-list.component.html',
-  styleUrls: ['./search-result-list.component.scss'],
-  providers: [
-    QueryService,
-    BaseUrl,
-    UrlSearch
-  ]
+  styleUrls: ['./search-result-list.component.scss']
 })
 export class SearchResultListComponent implements OnInit {
-  results: Array<any>;
+
 
   constructor(private queryService: QueryService) {
-    debugger;
-    this.queryService.results.subscribe(data => console.log(data));
+    //this.queryService.results.subscribe(data => console.log(data));
   }
 
   ngOnInit() {
+    console.log(this.queryService.results);
   }
 
 }

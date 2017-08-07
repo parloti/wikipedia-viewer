@@ -45,7 +45,8 @@ export class QueryService {
       .get(fullUrl)
       .map(response => {
         console.log(response);
-        return response.json().data as Result[];
+        const pages = response.json().query.pages;
+        return Object.keys(pages).map(k => pages[k]) as Result[];
       })
       .catch(error => {
         console.log(error);
@@ -57,9 +58,12 @@ export class QueryService {
     this.results = this.searchTerms
       .debounceTime(300)
       .distinctUntilChanged()
-      .switchMap(term => term
-        ? this.query(term)
-        : Observable.of<Result[]>([])
+      .switchMap(term => {
+        console.log(term);
+        return term
+          ? this.query(term)
+          : Observable.of<Result[]>([]);
+      }
       )
       .catch(error => {
         console.log(error);
@@ -67,7 +71,7 @@ export class QueryService {
       });
   }
 
-  private getFullUrlSource(titles: Array<string>): string {
+  public getFullUrlSource(titles: Array<string>): string {
     const baseUrl: string = this.baseUrl.getBaseUrlSource();
     const searchSource: string = this.urlSearch.getUrlSearchSource(titles);
 
@@ -76,7 +80,7 @@ export class QueryService {
     return fullUrl;
   }
 
-  private getTitles(searchBoxValue: string): Array<string> {
+  public getTitles(searchBoxValue: string): Array<string> {
     const titles = searchBoxValue.split(/,|\||;/g);
     const _titles = titles.map(value => value.trim());
 
