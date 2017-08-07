@@ -29,8 +29,8 @@ export class QueryService {
     });
   }
 
-  publishData(data: string) {
-    //this.searchTerms.next(data);
+  public nextSubject(searchBoxValue: string) {
+    this.searchTerms.next(searchBoxValue);
   }
 
   public query(searchBoxValue: string): Observable<Result[]> {
