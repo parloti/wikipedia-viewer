@@ -17,6 +17,6 @@ export class SearchBoxComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.queryService.observeSearchBoxValue();
+    this.queryService.observeSearchTerms();
   }
 }

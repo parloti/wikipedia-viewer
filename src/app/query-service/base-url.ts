@@ -1,6 +1,7 @@
 import { UrlSearch } from './url-search';
 
 export class BaseUrl {
+
     private readonly protocol: string;
     private readonly host: string;
     private readonly pathname: string;
@@ -14,4 +15,5 @@ export class BaseUrl {
     public getBaseUrlSource(): string {
         return `${this.protocol}//${this.host}${this.pathname}`;
     }
+
 }

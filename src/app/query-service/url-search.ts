@@ -1,35 +1,46 @@
 export class UrlSearch {
+
     private readonly action: string;
-    private readonly prop: string;
-    private readonly exintro: string;
+    private readonly errorformat: string;
+    private readonly errorlang: string;
+    private readonly exintro: number;
     private readonly format: string;
+    private readonly generator: string;
+    private readonly gsrinfo: string;
+    private gsroffset: number;
+    private gsrsearch: string;
     private readonly origin: string;
-    private titles: Array<string>;
+    private readonly piprop: string;
+    private readonly prop: string;
+    private readonly rawcontinue: number;
+    private readonly responselanginfo: number;
+    private readonly uselang: string;
+    private readonly utf8: number;
 
     public constructor() {
         this.action = 'query';
-        this.prop = 'extracts';
-        this.exintro = 'true';
+        this.errorformat = 'raw';
+        this.errorlang = 'en';
+        this.exintro = 1;
         this.format = 'json';
+        this.generator = 'search';
+        this.gsrinfo = 'totalhits';
+        this.gsroffset = 0;
+        this.gsrsearch = '';
         this.origin = '*';
+        this.piprop = 'thumbnail|name';
+        this.prop = 'extracts|pageimages';
+        this.rawcontinue = 1;
+        this.responselanginfo = 1;
+        this.uselang = 'en';
+        this.utf8 = 1;
     }
 
-    public getUrlSearchSource(_titles: Array<string>): string {
-        this.titles = _titles;
+    public getUrlSearchSource(term: string, offset: number = 0): string {
+        this.gsrsearch = term;
+        this.gsroffset = offset;
 
-        const __titles = this.getTitleSource();
-        const partialSource = this.toString();
-
-        const source = __titles + partialSource;
-
-        return source;
-    }
-
-    private getTitleSource(): string {
-        const key = 'titles';
-        const value = this.titles.join('|');
-
-        const source = `${key}=${value}`;
+        const source = this.toString();
 
         return source;
     }
@@ -40,12 +51,8 @@ export class UrlSearch {
         source = '';
 
         Object.keys(this).forEach(key => {
-            const isString = typeof this[key] === 'string';
             const value = this[key];
-
-            if (isString) {
-                source += `&${key}=${value}`;
-            }
+            source += `&${key}=${value}`;
         });
 
         return source;

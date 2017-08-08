@@ -13,7 +13,7 @@ import { Page } from '../page';
 @Injectable()
 export class QueryService {
 
-  public searchTerms: Subject<string>;
+  private searchTerms: Subject<string>;
   public pages: Observable<Page[]>;
   private headers: Headers;
 
@@ -29,22 +29,27 @@ export class QueryService {
     });
   }
 
-  public nextSubject(searchBoxValue: string) {
-    this.searchTerms.next(searchBoxValue);
+  public observeSearchTerms(): void {
+    this.pages = this.searchTerms
+      .debounceTime(500)
+      .distinctUntilChanged()
+      .switchMap(term => term
+        ? this.queryWikipediaAPI(term)
+        : Observable.of<Page[]>([])
+      )
+      .catch(error => {
+        console.log(error);
+        return Observable.of<Page[]>([]);
+      });
   }
 
-  public query(searchBoxValue: string): Observable<Page[]> {
-    console.log(searchBoxValue);
-    //this.searchTerms.next(searchBoxValue);
+  private queryWikipediaAPI(term: string): Observable<Page[]> {
 
-    const titles: Array<string> = this.getTitles(searchBoxValue);
-    const fullUrl: string = this.getFullUrlSource(titles);
-    console.log(fullUrl);
+    const fullUrl: string = this.getFullUrlSource(term);
 
     return this.http
       .get(fullUrl)
       .map(response => {
-        console.log(response);
         const pages = response.json().query.pages;
         return Object.keys(pages).map(k => pages[k]) as Page[];
       })
@@ -54,37 +59,18 @@ export class QueryService {
       });
   }
 
-  public observeSearchBoxValue(): void {
-    this.pages = this.searchTerms
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .switchMap(term => {
-        console.log(term);
-        return term
-          ? this.query(term)
-          : Observable.of<Page[]>([]);
-      }
-      )
-      .catch(error => {
-        console.log(error);
-        return Observable.of<Page[]>([]);
-      });
+  public nextSubject(searchBoxValue: string): void {
+    this.searchTerms.next(searchBoxValue);
   }
 
-  public getFullUrlSource(titles: Array<string>): string {
-    const baseUrl: string = this.baseUrl.getBaseUrlSource();
-    const searchSource: string = this.urlSearch.getUrlSearchSource(titles);
+  private getFullUrlSource(term: string): string {
 
-    const fullUrl = `${baseUrl}?${searchSource}`;
+    const baseUrl: string = this.baseUrl.getBaseUrlSource();
+    const urlSearch: string = this.urlSearch.getUrlSearchSource(term);
+
+    const fullUrl = `${baseUrl}?${urlSearch}`;
 
     return fullUrl;
-  }
-
-  public getTitles(searchBoxValue: string): Array<string> {
-    const titles = searchBoxValue.split(/,|\||;/g);
-    const _titles = titles.map(value => value.trim());
-
-    return _titles;
   }
 
   private handleError(error: any): Promise<any> {
