@@ -50,8 +50,9 @@ export class QueryService {
     return this.http
       .get(fullUrl)
       .map(response => {
-        const pages = response.json().query.pages;
-        return Object.keys(pages).map(k => pages[k]) as Page[];
+        const pages: object = response.json().query.pages;
+        const _pages: Array<Page[]> = Object.keys(pages).map(k => pages[k]).sort((a, b) => a.index - b.index);
+        return _pages;
       })
       .catch(error => {
         console.log(error);
