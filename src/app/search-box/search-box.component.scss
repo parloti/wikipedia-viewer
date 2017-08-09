@@ -1,0 +1,23 @@
+#search-box{
+    height: 40px;
+    border-radius: 40px;
+    padding-left:30px;
+    padding-right:30px;
+    border-color: #31708f;
+    border-width: 4px;
+    color: #31708f;
+}
+#search-box::placeholder {
+    color: #337ab7 !important;
+}
+.fa-times{
+    position: absolute;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    height: 20px;
+    margin: auto;
+    font-size: 20px;
+    cursor: pointer;
+    color: #31708f;
+}
