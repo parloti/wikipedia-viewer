@@ -48,7 +48,7 @@ export class QueryService {
     const fullUrl: string = this.getFullUrlSource(term);
 
     return this.http
-      .get(fullUrl)
+      .get(fullUrl, { headers: this.headers })
       .map(response => {
         const pages: object = response.json().query.pages;
         const _pages: Array<Page[]> = Object.keys(pages).map(k => pages[k]).sort((a, b) => a.index - b.index);
