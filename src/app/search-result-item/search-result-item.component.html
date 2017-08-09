@@ -1,3 +1,13 @@
 <li>
-  search-result-item works!
+  <div class="row">
+    <div class="thumbnail">
+      <img class="img-responsive img-thumbnail" *ngIf="page.thumbnail&&page.thumbnail.source" [src]="page.thumbnail.source">
+    </div>
+    <div>
+      <a [href]="'https://en.wikipedia.org/?curid='+page.pageid">
+      <span [textContent]="page.title"></span>
+    </a>
+    </div>
+    <div [innerHTML]="page.extract"></div>
+  </div>
 </li>
