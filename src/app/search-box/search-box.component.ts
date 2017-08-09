@@ -10,13 +10,41 @@ import { QueryService } from '../query-service/query.service';
 
 export class SearchBoxComponent implements OnInit {
 
-  constructor(private queryService: QueryService) { }
+  public inputHidden: boolean;
+  public searchBoxValue: string;
 
-  public search(searchBoxValue: string): void {
-    this.queryService.nextSubject(searchBoxValue);
+  constructor(private queryService: QueryService) {
+    this.inputHidden = false;
+  }
+
+  public toggleSearchInput(): boolean {
+    this.inputHidden = !this.inputHidden;
+    return false;
+  }
+
+  public clearOrHiddenSearchBox(): void {
+    if (this.searchBoxValue === '') {
+      this.toggleSearchInput();
+    } else {
+      this.clearSearchBox();
+    }
+  }
+
+  private hiddenSearchBox(): void {
+    this.toggleSearchInput();
+  }
+
+  private clearSearchBox(): void {
+    this.searchBoxValue = '';
+    this.queryService.clearPages();
+  }
+
+  public search(): void {
+    this.queryService.nextSubject(this.searchBoxValue);
   }
 
   ngOnInit() {
     this.queryService.observeSearchTerms();
+    //setTimeout(() => this.queryService.nextSubject('marte'), 5000);
   }
 }
