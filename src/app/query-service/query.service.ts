@@ -64,6 +64,10 @@ export class QueryService {
     this.searchTerms.next(searchBoxValue);
   }
 
+  public clearPages(): void {
+    this.pages = Observable.of<Page[]>([]);
+  }
+
   private getFullUrlSource(term: string): string {
 
     const baseUrl: string = this.baseUrl.getBaseUrlSource();
