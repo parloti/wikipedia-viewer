@@ -15,6 +15,7 @@ export class QueryService {
 
   private searchTerms: Subject<string>;
   public pages: Observable<Page[]>;
+  private pagesLength: number;
   private headers: Headers;
 
   public constructor(
@@ -23,10 +24,10 @@ export class QueryService {
     private readonly urlSearch: UrlSearch
   ) {
     this.searchTerms = new Subject<string>();
-    this.pages = new Observable<Page[]>();
     this.headers = new Headers({
       'Content-Type': 'application/json; charset=UTF-8'
     });
+    this.initializesObservablePages();
   }
 
   public observeSearchTerms(): void {
@@ -42,6 +43,12 @@ export class QueryService {
         return Observable.of<Page[]>([]);
       });
   }
+
+  private initializesObservablePages(): void {
+    this.observeSearchTerms();
+    this.pages.subscribe(pages => this.pagesLength = pages.length);
+  }
+
 
   private queryWikipediaAPI(term: string): Observable<Page[]> {
 

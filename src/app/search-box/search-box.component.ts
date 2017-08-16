@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { QueryService } from '../query-service/query.service';
 
@@ -8,7 +8,7 @@ import { QueryService } from '../query-service/query.service';
   styleUrls: ['./search-box.component.scss']
 })
 
-export class SearchBoxComponent implements OnInit {
+export class SearchBoxComponent {
 
   public inputHidden: boolean;
   public searchBoxValue: string;
@@ -24,7 +24,7 @@ export class SearchBoxComponent implements OnInit {
 
   public clearOrHiddenSearchBox(): void {
     if (this.searchBoxValue === '') {
-      this.toggleSearchInput();
+      this.hiddenSearchBox();
     } else {
       this.clearSearchBox();
     }
@@ -41,10 +41,5 @@ export class SearchBoxComponent implements OnInit {
 
   public search(): void {
     this.queryService.nextSubject(this.searchBoxValue);
-  }
-
-  ngOnInit() {
-    this.queryService.observeSearchTerms();
-    //setTimeout(() => this.queryService.nextSubject('marte'), 5000);
   }
 }
