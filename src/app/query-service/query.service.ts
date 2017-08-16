@@ -13,9 +13,8 @@ import { Page } from '../page';
 @Injectable()
 export class QueryService {
 
-  private searchTerms: Subject<string>;
   public pages: Observable<Page[]>;
-  private pagesLength: number;
+  private searchTerms: Subject<string>;
   private headers: Headers;
 
   public constructor(
@@ -46,9 +45,11 @@ export class QueryService {
 
   private initializesObservablePages(): void {
     this.observeSearchTerms();
-    this.pages.subscribe(pages => this.pagesLength = pages.length);
   }
 
+  public subscribeToPagesLength(callback: Function) {
+    this.pages.subscribe(pages => callback(pages.length));
+  }
 
   private queryWikipediaAPI(term: string): Observable<Page[]> {
 
@@ -69,10 +70,6 @@ export class QueryService {
 
   public nextSubject(searchBoxValue: string): void {
     this.searchTerms.next(searchBoxValue);
-  }
-
-  public clearPages(): void {
-    this.pages = Observable.of<Page[]>([]);
   }
 
   private getFullUrlSource(term: string): string {

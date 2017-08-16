@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { QueryService } from '../query-service/query.service';
 
@@ -8,13 +8,15 @@ import { QueryService } from '../query-service/query.service';
   styleUrls: ['./search-box.component.scss']
 })
 
-export class SearchBoxComponent {
+export class SearchBoxComponent implements OnInit {
 
   public inputHidden: boolean;
   public searchBoxValue: string;
+  public pagesLength: number;
 
   constructor(private queryService: QueryService) {
     this.inputHidden = false;
+    this.pagesLength = 0;
   }
 
   public toggleSearchInput(): boolean {
@@ -36,10 +38,21 @@ export class SearchBoxComponent {
 
   private clearSearchBox(): void {
     this.searchBoxValue = '';
-    this.queryService.clearPages();
+    this.search();
   }
 
   public search(): void {
     this.queryService.nextSubject(this.searchBoxValue);
+  }
+
+  private observePagesLength(): void {
+    this.queryService.subscribeToPagesLength(this.setPagesLength.bind(this));
+  }
+
+  private setPagesLength(length: number): void {
+    this.pagesLength = length;
+  }
+  ngOnInit() {
+    this.observePagesLength();
   }
 }
