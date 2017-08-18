@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
-import { QueryService } from '../query-service/query.service';
+import { QueryService } from './../query-service/query.service';
 
 @Component({
   selector: 'app-search-box',
@@ -10,39 +10,31 @@ import { QueryService } from '../query-service/query.service';
 
 export class SearchBoxComponent implements OnInit {
 
-  public inputHidden: boolean;
-  public searchBoxValue: string;
   public pagesLength: number;
+  public isInputSearchHidden: boolean;
+  public searchBoxValue: string;
 
-  constructor(private queryService: QueryService) {
-    this.inputHidden = false;
+  constructor(
+    private queryService: QueryService
+  ) {
     this.pagesLength = 0;
+    this.isInputSearchHidden = true;
   }
 
-  public toggleSearchInput(): boolean {
-    this.inputHidden = !this.inputHidden;
-    return false;
+  @HostListener('window:keyup.enter', ['$event'])
+  private onEnterKeyUp($event): void {
+    this.focusOnInputSearch();
   }
 
-  public clearOrHiddenSearchBox(): void {
-    if (this.searchBoxValue === '') {
-      this.hiddenSearchBox();
-    } else {
-      this.clearSearchBox();
+  private focusOnInputSearch(): void {
+    if (this.isInputSearchHidden) {
+      this.toggleSearchInput();
     }
   }
 
-  private hiddenSearchBox(): void {
-    this.toggleSearchInput();
-  }
-
-  private clearSearchBox(): void {
-    this.searchBoxValue = '';
-    this.search();
-  }
-
-  public search(): void {
-    this.queryService.nextSubject(this.searchBoxValue);
+  public toggleSearchInput(): boolean {
+    this.isInputSearchHidden = !this.isInputSearchHidden;
+    return false;
   }
 
   private observePagesLength(): void {
@@ -52,7 +44,8 @@ export class SearchBoxComponent implements OnInit {
   private setPagesLength(length: number): void {
     this.pagesLength = length;
   }
-  ngOnInit() {
+
+  public ngOnInit(): void {
     this.observePagesLength();
   }
 }

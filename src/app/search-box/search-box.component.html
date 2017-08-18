@@ -1,19 +1,14 @@
-<div class="text-center">
+<div class="text-center" [class.centered]="pagesLength===0">
   <div>
     <a target="_blank" href="https://en.wikipedia.org/wiki/Special:Random">
       <p class="text-primary">Click here for a random article</p>
     </a>
   </div>
   <div>
-    <a *ngIf="inputHidden" href="" (click)="toggleSearchInput()"> 
-      <i  class="fa fa-search fa-4x" aria-hidden="true"></i>
-    </a>
-    <div *ngIf="!inputHidden" class="btn-group">
-      <input id="search-box" (keyup)="search()" placeholder="Search" type="search" class="form-control" [(ngModel)]="searchBoxValue">
-      <i class="fa fa-times" aria-hidden="true" (click)="clearOrHiddenSearchBox()"></i>
-    </div>
-  </div>
-  <div>
-    <p *ngIf="inputHidden" class="text-info">Click icon to search</p>
+    <app-icon-search *ngIf="isInputSearchHidden; else inputSearch" (onToggleSearchInput)="toggleSearchInput()"></app-icon-search>
+    <ng-template #inputSearch>
+      <app-input-search (onToggleSearchInput)="toggleSearchInput()"></app-input-search>
+    </ng-template>
+
   </div>
 </div>

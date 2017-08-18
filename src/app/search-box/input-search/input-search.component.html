@@ -1,0 +1,5 @@
+<div class="btn-group">
+  <input [(ngModel)]="inputSearchValue" [autofocus]="true" (input)="search()" id="input-search" class="form-control" type="search"
+    placeholder="Search">
+  <i (click)="clearOrHiddenInputSearch()" class="fa fa-times" aria-hidden="true"></i>
+</div>
