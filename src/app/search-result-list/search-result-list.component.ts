@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -11,6 +11,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 
 import { QueryService } from '../query-service/query.service';
+import { Page } from '../page';
 
 @Component({
   selector: '#app-search-result-list',
@@ -18,8 +19,22 @@ import { QueryService } from '../query-service/query.service';
   styleUrls: ['./search-result-list.component.scss']
 })
 
-export class SearchResultListComponent {
+export class SearchResultListComponent implements OnInit {
 
-  constructor(private queryService: QueryService) { }
+  public pages: Page[];
+  constructor(private queryService: QueryService) {
+  }
+
+  private observePages(): void {
+    this.queryService.subscribeToPages(this.setPages.bind(this));
+  }
+
+  private setPages(pages: Page[]): void {
+    this.pages = pages;
+  }
+
+  ngOnInit() {
+    this.observePages();
+  }
 
 }
