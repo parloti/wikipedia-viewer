@@ -1,13 +1,11 @@
-<li>
-  <div class="row">
-    <div class="thumbnail">
-      <img class="img-responsive img-thumbnail" *ngIf="page.thumbnail&&page.thumbnail.source" [src]="page.thumbnail.source">
-    </div>
-    <div>
-      <a [href]="'https://en.wikipedia.org/?curid='+page.pageid">
+<button class="list-group-item">
+  <h4 class="list-group-item-heading">
+    <a [href]="'https://en.wikipedia.org/?curid='+page.pageid">
+      <i class="fa fa-link" aria-hidden="true"></i>
       <span [textContent]="page.title"></span>
     </a>
-    </div>
-    <div [innerHTML]="page.extract"></div>
-  </div>
-</li>
+  </h4>
+  <p class="list-group-item-text">
+    <span [innerHTML]="page.extract"></span>
+  </p>
+</button>

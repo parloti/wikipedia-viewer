@@ -13,7 +13,7 @@ import 'rxjs/add/operator/switchMap';
 import { QueryService } from '../query-service/query.service';
 
 @Component({
-  selector: 'app-search-result-list',
+  selector: '#app-search-result-list',
   templateUrl: './search-result-list.component.html',
   styleUrls: ['./search-result-list.component.scss']
 })

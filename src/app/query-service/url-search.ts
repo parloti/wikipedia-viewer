@@ -28,8 +28,7 @@ export class UrlSearch {
         this.gsroffset = 0;
         this.gsrsearch = '';
         this.origin = '*';
-        this.piprop = 'thumbnail|name';
-        this.prop = 'extracts|pageimages';
+        this.prop = 'extracts';
         this.rawcontinue = 1;
         this.responselanginfo = 1;
         this.uselang = 'en';

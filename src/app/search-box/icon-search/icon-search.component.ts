@@ -22,6 +22,7 @@ export class IconSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.onToggleSearchInput.emit();
   }
 
 }

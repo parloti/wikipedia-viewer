@@ -1,0 +1,14 @@
+/deep/ app-search-result-item .list-group-item {
+    border-radius: 0!important;
+    margin-bottom: -1px!important;
+}
+/deep/ app-search-result-item:first-of-type .list-group-item{
+    border-top-left-radius: 4px!important;
+    border-top-right-radius: 4px!important;
+}
+
+/deep/ app-search-result-item:last-of-type .list-group-item {
+    margin-bottom: 0!important;
+    border-bottom-right-radius: 4px!important;
+    border-bottom-left-radius: 4px!important;
+}

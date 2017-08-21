@@ -49,7 +49,8 @@ export class InputSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    this.inputSearchValue = 'Marte';
+    this.search();
   }
 
 }
