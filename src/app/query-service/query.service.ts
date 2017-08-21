@@ -47,8 +47,8 @@ export class QueryService {
     this.observeSearchTerms();
   }
 
-  public subscribeToPagesLength(callback: Function) {
-    this.pages.subscribe(pages => callback(pages.length));
+  public subscribeToPages(callback: Function) {
+    this.pages.subscribe(pages => callback(pages));
   }
 
   private queryWikipediaAPI(term: string): Observable<Page[]> {
@@ -59,7 +59,7 @@ export class QueryService {
       .get(fullUrl, { headers: this.headers })
       .map(response => {
         const pages: object = response.json().query.pages;
-        const _pages: Array<Page[]> = Object.keys(pages).map(k => pages[k]).sort((a, b) => a.index - b.index);
+        const _pages: Page[] = Object.keys(pages).map(k => pages[k]).sort((a, b) => a.index - b.index);
         return _pages;
       })
       .catch(error => {

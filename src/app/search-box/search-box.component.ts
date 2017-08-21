@@ -1,6 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 
+import { Observable } from 'rxjs/Observable';
+
 import { QueryService } from './../query-service/query.service';
+import { Page } from '../page';
 
 @Component({
   selector: 'app-search-box',
@@ -38,11 +41,11 @@ export class SearchBoxComponent implements OnInit {
   }
 
   private observePagesLength(): void {
-    this.queryService.subscribeToPagesLength(this.setPagesLength.bind(this));
+    this.queryService.subscribeToPages(this.setPagesLength.bind(this));
   }
 
-  private setPagesLength(length: number): void {
-    this.pagesLength = length;
+  private setPagesLength(pages: Page[]): void {
+    this.pagesLength = pages.length;
   }
 
   public ngOnInit(): void {
