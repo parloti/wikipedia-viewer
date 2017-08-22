@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 import { QueryService } from './../../query-service/query.service';
 
@@ -7,7 +7,7 @@ import { QueryService } from './../../query-service/query.service';
   templateUrl: './input-search.component.html',
   styleUrls: ['./input-search.component.scss']
 })
-export class InputSearchComponent implements OnInit {
+export class InputSearchComponent {
 
   @Output()
   public readonly onToggleSearchInput: EventEmitter<boolean>;
@@ -45,11 +45,6 @@ export class InputSearchComponent implements OnInit {
 
   private clearSearchBox(): void {
     this.inputSearchValue = '';
-    this.search();
-  }
-
-  ngOnInit() {
-    this.inputSearchValue = 'Marte';
     this.search();
   }
 

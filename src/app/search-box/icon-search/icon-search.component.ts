@@ -1,11 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-icon-search',
   templateUrl: './icon-search.component.html',
   styleUrls: ['./icon-search.component.scss']
 })
-export class IconSearchComponent implements OnInit {
+export class IconSearchComponent {
 
   @Output()
   public readonly onToggleSearchInput: EventEmitter<boolean>;
@@ -19,10 +19,6 @@ export class IconSearchComponent implements OnInit {
   public toggleSearchInput(): boolean {
     this.onToggleSearchInput.emit();
     return false;
-  }
-
-  ngOnInit() {
-    this.onToggleSearchInput.emit();
   }
 
 }
